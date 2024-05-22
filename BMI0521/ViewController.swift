@@ -82,7 +82,6 @@ class ViewController: UIViewController {
         
     }
     
-    
     @IBAction func resultButtonTapped(_ sender: UIButton) {
         
         let alert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
@@ -95,6 +94,7 @@ class ViewController: UIViewController {
         let weight = weightTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         let height = heightTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         
         guard let weight = Double(weight) else { return }
         guard let height = Double(height) else { return }
@@ -115,6 +115,9 @@ class ViewController: UIViewController {
         default:
             print("값 없음")
         }
-        
     }
+    
+    
+    
+    
 }
