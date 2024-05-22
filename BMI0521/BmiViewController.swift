@@ -11,6 +11,10 @@ class BmiViewController: UIViewController {
     
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var subTitleLabel: UILabel!
+    
+    
+    @IBOutlet var nicknameTextField: UITextField!
+    
     @IBOutlet var heightLabel: UILabel!
     @IBOutlet var heightTextField: UITextField!
     @IBOutlet var weightLabel: UILabel!
@@ -18,11 +22,20 @@ class BmiViewController: UIViewController {
     @IBOutlet var randomButton: UIButton!
     @IBOutlet var resultButton: UIButton!
     
+    @IBOutlet var resetButton: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        
+        let nickname = UserDefaults.standard.string(forKey: "nickname")
+        let height = UserDefaults.standard.string(forKey: "height")
+        let weight = UserDefaults.standard.string(forKey: "weight")
+        
+        nicknameTextField.text = nickname
+        heightTextField.text = height
+        weightTextField.text = weight
     }
     
     func designLabelUI(_ label: UILabel, textLabel: String) {
@@ -40,11 +53,21 @@ class BmiViewController: UIViewController {
         textField.layer.borderWidth = 2
     }
     
+    func designButtonUI(_ button: UIButton, text: String) {
+        button.backgroundColor = .purple
+        button.tintColor = .white
+        button.layer.cornerRadius = 15
+        button.setTitle(text, for: .normal)
+        
+    }
+    
     func setUpUI(){
         titleLabel.textAlignment = .left
         titleLabel.font = .boldSystemFont(ofSize: 30)
         titleLabel.textColor = .black
         titleLabel.text = "BMI Calculator"
+        
+       
         
         
         
@@ -52,6 +75,8 @@ class BmiViewController: UIViewController {
         designLabelUI(heightLabel, textLabel: "키가 어떻게 되시나요?")
         designLabelUI(weightLabel, textLabel: "몸무게는 어떻게 되시나요?")
         
+        designTextFieldUI(nicknameTextField)
+        nicknameTextField.placeholder = "닉네임을 입력해주세요"
         designTextFieldUI(heightTextField)
         designTextFieldUI(weightTextField)
         
@@ -61,13 +86,8 @@ class BmiViewController: UIViewController {
         randomButton.setTitle("랜덤으로 BMI 계산하기", for: .normal)
         randomButton.titleLabel?.font = .systemFont(ofSize: 14)
         
-        
-        
-        
-        resultButton.backgroundColor = .purple
-        resultButton.tintColor = .white
-        resultButton.layer.cornerRadius = 15
-        resultButton.setTitle("결과 확인", for: .normal)
+        designButtonUI(resultButton, text: "결과 확인")
+        designButtonUI(resetButton, text: "리셋")
     }
     
     
@@ -83,6 +103,11 @@ class BmiViewController: UIViewController {
     }
     
     @IBAction func resultButtonTapped(_ sender: UIButton) {
+        UserDefaults.standard.set(nicknameTextField.text, forKey: "nickname")
+        UserDefaults.standard.set(heightTextField.text, forKey: "height")
+        UserDefaults.standard.set(weightTextField.text, forKey: "weight")
+    
+        
         
         let alert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
         
@@ -97,6 +122,7 @@ class BmiViewController: UIViewController {
         
         
         guard let weight = Double(weight) else { return }
+        
         guard let height = Double(height) else { return }
         
         
@@ -119,5 +145,13 @@ class BmiViewController: UIViewController {
     
     
     
+    @IBAction func resetButtonTapped(_ sender: UIButton) {
+        nicknameTextField.text = ""
+        UserDefaults.standard.removeObject(forKey: "nickname")
+        heightTextField.text = ""
+        UserDefaults.standard.removeObject(forKey: "height")
+        weightTextField.text = ""
+        UserDefaults.standard.removeObject(forKey: "weight")
+    }
     
 }
